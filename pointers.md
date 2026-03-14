@@ -14,6 +14,7 @@ int main() {
                                 // 習慣念法: "ptr 指向 a 裡面的值"
 
     // 額外示範 ptr 與 &ptr 的差別
+    printf("a 的位址 = %p\n", &a);                  // a 本身的位址
     printf("ptr 指向的位址 (a 的位置) = %p\n", ptr); //ptr指向的位置
     printf("ptr 本身的位址 = %p\n", &ptr); //ptr自己本身的位置
 
@@ -33,10 +34,32 @@ int main() {
     int *ptr = &a;       // ptr 指向 a
     int **dptr = &ptr;   // dptr 指向 ptr
 
-    printf("a = %d\n", **dptr);  // 解兩層指標
+    // ===== 變數 a =====
+    printf("[變數] a 的值: %d\n", a);            // 預期輸出: 10
+    printf("[變數] a 的位址: %p\n", (void*)&a);  // 預期輸出: a 的記憶體位址
+
+    // ===== 單指標 ptr =====
+    printf("[指標] ptr 指向的值 (*ptr): %d\n", *ptr);      // 預期輸出: 10
+    printf("[指標] ptr 儲存的位址 (ptr): %p\n", (void*)ptr);  // 預期輸出: a 的位址
+    printf("[指標] ptr 本身的位址 (&ptr): %p\n", (void*)&ptr); // 預期輸出: ptr 的位址
+
+    // ===== 雙指標 dptr =====
+    printf("[雙指標] dptr 指向的值 (*dptr): %p\n", (void*)*dptr);   // 預期輸出: ptr 的位址
+    printf("[雙指標] dptr 指向的值再解參照 (**dptr): %d\n", **dptr); // 預期輸出: 10
+    printf("[雙指標] dptr 儲存的位址 (dptr): %p\n", (void*)dptr);      // 預期輸出: ptr 的位址
+    printf("[雙指標] dptr 本身的位址 (&dptr): %p\n", (void*)&dptr);    // 預期輸出: dptr 的位址
+
     return 0;
 }
 ```
+> 詳細參考這個連結，他的圖片挺好記憶 https://hackmd.io/@ndhu-programming-2021/HkruR89RY
+
+為什麼要 (void*)？ 
+
+標準 C 語言要求：
+- %p 只保證正確打印 void*，其他型別不保證
+- 避免警告：特別是用 -Wall -Wextra 編譯時
+- 可讀性：清楚表明「這是要輸出記憶體位址」
 
 ### 指標與陣列的運算差異
 假設有陣列：
