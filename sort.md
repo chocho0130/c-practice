@@ -32,7 +32,7 @@ void selectionSort(int arr[], int n) {
         for (int j = i + 1; j < n; j++) {
             if (arr[j] < arr[min_idx]) min_idx = j;
         }
-        // 交換位置，tmp 就是你說的輔助空間
+        //最後才交換，由這邊可以看到不穩定的原因
         int tmp = arr[min_idx];
         arr[min_idx] = arr[i];
         arr[i] = tmp;
@@ -115,7 +115,7 @@ void mergeSort(int arr[], int l, int r) {
     }
 }
 ```
-### 排序演算法速查表（彩色版）
+### 排序演算法速查表 
 
 > **穩定性 (Stability)**  
 > 如果兩個數字的值一樣，排序後它們的「相對順序」會不會改變？  
