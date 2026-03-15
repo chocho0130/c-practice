@@ -91,7 +91,7 @@ void quickSort(int arr[], int low, int high) {
 void merge(int arr[], int l, int m, int r) {
     int n1 = m - l + 1;
     int n2 = r - m;
-    int L[n1], R[n2]; // 建立左右兩個暫存陣列
+    int L[n1], R[n2]; // 建立左右兩個暫存陣列  //也可以這樣寫int *L = (int*)malloc(n1 * sizeof(int));
 
     for (int i = 0; i < n1; i++) L[i] = arr[l + i];
     for (int j = 0; j < n2; j++) R[j] = arr[m + 1 + j];
@@ -104,11 +104,13 @@ void merge(int arr[], int l, int m, int r) {
     }
     while (i < n1) { arr[k] = L[i]; i++; k++; } // 搬移剩餘元素
     while (j < n2) { arr[k] = R[j]; j++; k++; }
+
+    //如果有分配記憶體 int *L = (int*)malloc(n1 * sizeof(int)); 要記得補上free(L);
 }
 
 void mergeSort(int arr[], int l, int r) {
     if (l < r) {
-        int m = l + (r - l) / 2;
+        int m = l + (r - l) / 2;  // 或者是 (l + r) / 2
         mergeSort(arr, l, m);     // 遞迴拆分左半邊
         mergeSort(arr, m + 1, r); // 遞迴拆分右半邊
         merge(arr, l, m, r);      // 合併
