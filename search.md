@@ -316,24 +316,30 @@ O(n)
 ---
 
 ```c
-// 找最大長度子陣列總和
+// 找最大長度子陣列總和 
 
-int max_subarray_sum(int arr[], int n, int k)
+int max_subarray_sum(int arr[], int n, int k) //給一個 array，找出 長度為 k 的子陣列最大總和 k=子序列長度 n為陣列長度
 {
-    int sum = 0;
+    int window_sum = 0; 
 
+    // 計算第一個 window
     for(int i = 0; i < k; i++)
-        sum += arr[i];
+    {
+        window_sum += arr[i];
+    }
 
-    int max_sum = sum;
+    int max_sum = window_sum;
 
+    // 開始滑動 window
     for(int i = k; i < n; i++)
     {
-        sum += arr[i];
-        sum -= arr[i-k];
+        window_sum += arr[i];     // 新元素加入
+        window_sum -= arr[i-k];   // 舊元素移出
 
-        if(sum > max_sum)
-            max_sum = sum;
+        if(window_sum > max_sum)
+        {
+            max_sum = window_sum;
+        }
     }
 
     return max_sum;
