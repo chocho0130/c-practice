@@ -39,7 +39,10 @@ int linear_search(int arr[], int n, int target)
 ---
 
 ### 2. Binary Search(二元搜尋)
-每次將搜尋範圍縮小一半，比較常考這個。  
+每次將搜尋範圍縮小一半，比較常考這個。
+
+條件：
+- 陣列必須 **已排序 (sorted)**
 
 ---
  Time Complexity
@@ -57,7 +60,7 @@ int binary_search(int arr[], int left, int right, int target)
 {
     while(left <= right)
     {
-        int mid = left + (right - left) / 2; 
+        int mid = left + (right - left) / 2;  //避免overflow盡量不要寫(left + right) / 2
 
         if(arr[mid] == target)
             return mid;
@@ -72,6 +75,19 @@ int binary_search(int arr[], int left, int right, int target)
 }
 ```
 ---
+Binary Search 常見五題：
+
+First occurrence → 第一個出現
+
+Last occurrence → 最後一個出現
+
+Lower bound → 第一個 ≥ target
+
+Upper bound → 第一個 > target
+
+Search in rotated array → 旋轉排序陣列搜尋
+
+---
 
 ### 3. DFS (Depth First Search)
 中文為深度優先搜尋
@@ -82,7 +98,7 @@ int binary_search(int arr[], int left, int right, int target)
 - Tree traversal
 - Graph traversal
   
-常見順序：
+Tree traversal 常見順序：
 
 - Preorder
 - Inorder
@@ -93,8 +109,8 @@ int binary_search(int arr[], int left, int right, int target)
 Time Complexity
 
 O(V + E)
-> V = vertex
-> E = edge
+> V = number of vertices  
+> E = number of edges  
 
 ---
 
@@ -166,6 +182,7 @@ void bfs(int start, int n)
 }
 
 ```
+---
 
 ### 5. Hash Table Search
 透過 Hash Function 直接找到資料位置。
@@ -216,6 +233,7 @@ int search(int key){
 }
 
 ```
+> 簡化版本，未處理 collision
 
 ---
 
@@ -228,3 +246,162 @@ int search(int key){
 | DFS             | Graph / Tree | O(V + E)     |
 | BFS             | Graph / Tree | O(V + E)     |
 | Hash Search     | Hash Table   | O(1) average |
+
+---
+
+### 6. Two Pointer Search (雙指標搜尋)
+
+使用兩個指標從不同方向移動，常用於 **排序陣列或字串問題**。
+
+常見用途：
+
+- Two Sum (sorted array)
+- 移除重複元素
+- 反轉字串
+- 判斷回文 (Palindrome)
+
+---
+
+Time Complexity
+
+O(n)
+
+---
+
+```c
+// 找到兩個數字相加等於 target (sorted array)
+
+int two_sum(int arr[], int n, int target)
+{
+    int left = 0;
+    int right = n - 1;
+
+    while(left < right)
+    {
+        int sum = arr[left] + arr[right];
+
+        if(sum == target)
+        {
+            return 1;
+        }
+        else if(sum < target)
+        {
+            left++;
+        }
+        else
+        {
+            right--;
+        }
+    }
+
+    return 0;
+}
+```
+---
+
+### 7. Sliding Window (滑動視窗)
+維持一個 區間(window)，逐步向右移動。
+
+適合問題：
+
+- Subarray sum 
+- Longest substring 
+- Maximum sum subarray
+
+---
+
+Time Complexity  
+O(n)
+
+---
+
+```c
+// 找最大長度子陣列總和
+
+int max_subarray_sum(int arr[], int n, int k)
+{
+    int sum = 0;
+
+    for(int i = 0; i < k; i++)
+        sum += arr[i];
+
+    int max_sum = sum;
+
+    for(int i = k; i < n; i++)
+    {
+        sum += arr[i];
+        sum -= arr[i-k];
+
+        if(sum > max_sum)
+            max_sum = sum;
+    }
+
+    return max_sum;
+}
+
+```
+--- 
+
+### 8. Backtracking (回溯搜尋)
+透過 嘗試所有可能解，如果不符合條件就回退。
+
+常用於：
+
+- Permutation
+
+- Combination
+
+- N-Queens
+
+- Sudoku
+
+本質上是一種 DFS 搜尋策略。
+
+---
+Time Complexity  
+通常為:
+O(2^n) 或 O(n!)
+
+---
+
+```c
+#include <stdio.h>
+
+void permutation(int arr[], int start, int n)
+{
+    if(start == n)
+    {
+        for(int i = 0; i < n; i++)
+            printf("%d ", arr[i]);
+        printf("\n");
+        return;
+    }
+
+    for(int i = start; i < n; i++)
+    {
+        int temp = arr[start];
+        arr[start] = arr[i];
+        arr[i] = temp;
+
+        permutation(arr, start + 1, n);
+
+        temp = arr[start];
+        arr[start] = arr[i];
+        arr[i] = temp;
+    }
+}
+```
+---
+
+### Interview Quick Summary
+
+| Algorithm | Requirement | Time Complexity |
+|----------|-------------|----------------|
+| Linear Search | None | O(n) |
+| Binary Search | Sorted Array | O(log n) |
+| DFS | Graph / Tree | O(V + E) |
+| BFS | Graph / Tree | O(V + E) |
+| Hash Table Search | Hash Table | O(1) average |
+| Two Pointer | Sorted Array / String | O(n) |
+| Sliding Window | Subarray / Substring | O(n) |
+| Backtracking | Combinational Search | O(2^n) |
