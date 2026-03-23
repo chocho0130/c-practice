@@ -989,6 +989,219 @@ A:
 - Banker’s Algorithm 的缺點？
 - Resource allocation graph 是什麼？
 
+## 10. 🧩 IPC（Inter-Process Communication）
+
+### 📌 定義
+IPC 是讓不同 Process 之間可以**交換資料與進行溝通**的機制。
+
+👉 為什麼需要？
+因為 Process 彼此是獨立的（不同記憶體空間），無法直接存取彼此資料。
+
+---
+
+### ⚙️ 運作流程
+
+（以 Pipe 為例）
+
+1. 建立 pipe（OS 建立一個 buffer）
+2. Process A 將資料寫入 pipe
+3. OS 將資料存入 buffer
+4. Process B 從 pipe 讀取資料
+5. 完成資料傳遞
+
+---
+
+👉 不同 IPC 的本質差異：
+- 是否共享記憶體
+- 是否需要 kernel 介入
+- 傳輸效率
+
+---
+
+### ⚠️ 問題
+
+#### 1️⃣ Synchronization 問題
+- 多個 process 同時存取資料
+
+---
+
+#### 2️⃣ 資料一致性
+- shared memory 需要自己控制
+
+---
+
+#### 3️⃣ Kernel Overhead
+- message passing 需要 system call
+
+---
+
+#### 4️⃣ Blocking 問題
+- read / write 可能被阻塞
+
+---
+
+#### 5️⃣ 複雜度
+- shared memory 難寫但快
+
+---
+
+### 💬 面試 QA
+
+Q: IPC 是什麼？  
+A:  
+IPC 是讓不同 process 之間能夠交換資料的機制，例如 pipe、shared memory 等。
+
+---
+
+Q: 常見 IPC 有哪些？  
+A:  
+- Pipe  
+- Message Queue  
+- Shared Memory  
+- Socket  
+
+---
+
+Q: 哪種 IPC 最快？  
+A:  
+👉 Shared Memory  
+因為不需要經過 kernel copy，直接共享記憶體  
+
+👉 但需要自己處理 synchronization
+
+---
+
+Q: Pipe 的特性？  
+A:  
+- 單向（half-duplex）  
+- 通常用於 parent-child process  
+
+---
+
+Q: Message Queue 跟 Pipe 差別？  
+A:  
+- Message Queue：有結構（message-based）  
+- Pipe：資料流（byte stream）  
+
+---
+
+Q: Socket 用在什麼情況？  
+A:  
+用於不同機器（network）或跨 process 溝通
+
+---
+
+### 🔥 延伸追問
+
+- Shared Memory 要怎麼避免 race condition？
+- Blocking vs Non-blocking I/O？
+- Pipe 可以雙向嗎？
+- IPC 會不會造成 deadlock？
+- 為什麼 message passing 比 shared memory 慢？
+
+👉 進階（加分🔥）
+- mmap（memory-mapped file）
+- Zero-copy
+- UNIX domain socket
+
 👉 進階（加分🔥）
 - Wait-for graph
 - 實務系統通常怎麼處理 deadlock（很多是忽略或 timeout）
+
+## 11. 🧩 System Call（系統呼叫）
+
+### 📌 定義
+System Call 是使用者程式（User Space）向作業系統（Kernel）請求服務的介面。
+
+👉 本質：
+提供一個「安全的方式」讓程式存取硬體與系統資源
+
+---
+
+### ⚙️ 運作流程
+
+1. User 程式呼叫 system call（如 read(), write()）
+2. 透過特殊指令（trap / syscall）
+3. CPU 切換到 **Kernel Mode**
+4. OS 根據 system call number 找到對應服務
+5. Kernel 執行操作（例如存取檔案、記憶體）
+6. 將結果回傳
+7. 切回 **User Mode**，繼續執行程式
+
+👉 核心切換：
+User Mode → Kernel Mode → User Mode
+
+---
+
+### ⚠️ 問題
+
+#### 1️⃣ Mode Switch Overhead
+- User ↔ Kernel 切換需要成本
+
+---
+
+#### 2️⃣ Context Switch 成本
+- 某些 system call 會導致 process 切換
+
+---
+
+#### 3️⃣ 安全性限制
+- 使用者不能直接操作硬體，必須透過 system call
+
+---
+
+#### 4️⃣ 頻繁呼叫影響效能
+- I/O 密集程式會大量使用 system call
+
+---
+
+### 💬 面試 QA
+
+Q: System call 是什麼？  
+A:  
+System call 是 user program 向 OS 請求服務的介面，例如檔案讀寫或記憶體操作。
+
+---
+
+Q: 為什麼需要 system call？  
+A:  
+因為 user program 不能直接操作硬體，必須透過 OS 才能安全存取資源。
+
+---
+
+Q: System call 發生時 CPU 做了什麼？  
+A:  
+CPU 會從 user mode 切換到 kernel mode，執行 OS 的程式碼，完成後再切回 user mode。
+
+---
+
+Q: System call 跟 function call 差別？  
+A:  
+- function call：在 user space 內部呼叫  
+- system call：需要切換到 kernel space  
+
+👉 system call 成本較高
+
+---
+
+Q: 常見 system call 類型？  
+A:  
+- Process control（fork, exec）  
+- File management（read, write）  
+- Device management  
+- Communication（IPC）  
+
+---
+
+### 🔥 延伸追問
+
+- system call 一定會 context switch 嗎？
+- trap 跟 interrupt 差別？
+- 為什麼 system call 比 function call 慢？
+- 如何減少 system call overhead？
+- blocking vs non-blocking system call？
+
+👉 進階（加分🔥）
+- syscall number / dispatch table
+- vDSO（減少 kernel 切換）
+- user-level library（glibc）
