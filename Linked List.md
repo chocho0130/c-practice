@@ -179,3 +179,10 @@ bool hasCycle(Node *head) {
     return false;
 }
 ```
+---
+### LeetCode 考題
+
+> 707. Design Linked List https://leetcode.com/problems/design-linked-list/description/
+主要實現linkedlist各種功能
+> 21. Merge Two Sorted Lists https://leetcode.com/problems/merge-two-sorted-lists/description/
+合併兩個已經排序的list 
