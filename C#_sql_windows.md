@@ -3,10 +3,10 @@
 
 ## 🛠️ 第一步：環境搭建（VS 2019 必備）
 
-在開始寫程式前，要先安裝了這三個工具：
-SQL Server Express：免費的資料庫引擎（後端的核心）。
-SSMS (SQL Server Management Studio)：管理資料庫的圖形介面（就像 SQL 界的檔案總管）。
-Visual Studio
+在開始寫程式前，要先安裝了這三個工具： \
+SQL Server Express：免費的資料庫引擎（後端的核心）。 \
+SSMS (SQL Server Management Studio)：管理資料庫的圖形介面（就像 SQL 界的檔案總管）。 \
+Visual Studio :寫C#程式的地方
 
 > 進階 : 嘗試MAC&跨電腦串SQL
 
