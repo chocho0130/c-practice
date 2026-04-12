@@ -1,5 +1,5 @@
 # C# 連結「資料庫」 學習流程
-
+這md檔案主要是教學在Windows環境下安裝SQL還有C#撰寫環境
 
 ## 🛠️ 第一步：環境搭建（VS 2019 必備）
 
@@ -217,3 +217,6 @@ namespace YourProjectName
 1. 按下鍵盤 F5 執行程式。
 2. 點擊按鈕。
 3. 成果展現：你應該會看到 DataGridView 裡面出現了你在 SSMS 裡手動輸入的「小明」和「阿華」！
+
+接下來就可以進行更深入的操作
+https://github.com/chocho0130/Engineer-Interview-Practice/blob/main/C%23_CRUD.md
