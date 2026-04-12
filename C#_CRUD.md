@@ -767,9 +767,9 @@ foreach (var row in dataGridView1.Rows)
 這是 C# 物件導向 (OOP) 的靈魂。
 - 類別 (Class)：藍圖（例如：設計圖：汽車）。
 - 物件 (Object)：實體（例如：那台紅色的賓士）。
-- new 關鍵字：就是「照著藍圖造出一台車」的動作。
-        - SqlConnection conn = new SqlConnection();
-        - 這行就是在說：我要照著連線藍圖，造出一個真正的連線物件。
+- new 關鍵字：就是「照著藍圖造出一台車」的動作。 \
+  - SqlConnection conn = new SqlConnection();
+  - 這行就是在說：我要照著連線藍圖，造出一個真正的連線物件。
 5. 存取修飾詞 (Access Modifiers)
 這決定了誰可以看你的程式碼。
 - public：全公開，誰都能用。
@@ -793,7 +793,7 @@ private void b1_Click(object sender, EventArgs e) // 這是「方法」，回傳
 
 ## ADO.NET 
 
-ADO.NET 的運作原理可以拆解為兩個核心架構：「連線式」與「離線式」
+ADO.NET 的運作原理可以拆解為兩個核心架構：「連線式」與「離線式」 \
 1️⃣ 核心三劍客（連線式元件）
 這三個元件在運作時，必須保持資料庫連線開啟。
 1. SqlConnection (通道)
@@ -808,15 +808,16 @@ ADO.NET 的運作原理可以拆解為兩個核心架構：「連線式」與「
 - 功能：一筆一筆快速讀取資料。
 - 原理：它是唯讀、只能向前的。它不會把資料存下來，而是讀一筆丟一筆。
 - 優點：速度極快，省記憶體。 
+
 2️⃣ 緩衝快取（離線式元件)
 這就是我們寫程式用來填滿表格的核心，它們可以在斷開連線後繼續使用資料。
 4. SqlDataAdapter (轉接器/水管)
 - 角色：連線式與離線式之間的「橋樑」。
 - 原理：它內部其實包含了 SelectCommand。當你呼叫 .Fill() 時，它會自動：
-        - Open 連線。
-        - 執行 SQL 指令。
-        - 把撈到的資料塞進 DataTable。
-        - 自動 Close 連線。
+  - Open 連線。
+  - 執行 SQL 指令。
+  - 把撈到的資料塞進 DataTable。
+  - 自動 Close 連線。
 5. DataTable / DataSet (虛擬表格)
 - 角色：存在於記憶體中的 Excel 表。
 - 原理：一旦 DataAdapter 把資料倒進來，資料就存在電腦記憶體裡了。這時就算把 SQL Server 關掉，你的 DataGridView 依然能看到資料。 
@@ -828,4 +829,3 @@ ADO.NET 的運作原理可以拆解為兩個核心架構：「連線式」與「
 3. Transport: SqlDataAdapter 拿著桶子（DataTable）去接資料。
 4. Fill: 資料填滿 DataTable 後，電話（Connection）掛斷。
 5. Display: DataGridView.DataSource = dt（把桶子裡的資料倒給螢幕看）。
-6. 
