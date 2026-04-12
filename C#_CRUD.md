@@ -708,6 +708,7 @@ namespace try_WindowsFormsApp1
 - 白話解釋：它就像是「資料夾」或「姓氏」。
 - 功能：防止命名衝突。如果有兩個人都寫了 Form1，只要他們在不同的 namespace 下，電腦就不會搞混。
 - 例子：台北市.中山路 和 台中市.中山路 是不同的地方。
+
 4. try...catch (攔截錯誤)
 這是我們寫 ex.Message 的地方。
 流程：
@@ -763,11 +764,12 @@ foreach (var row in dataGridView1.Rows)
 }
 ```
 跟C/C++語法有點差異
+
 4. 🏛️類別與物件 (Class & Object)
 這是 C# 物件導向 (OOP) 的靈魂。
 - 類別 (Class)：藍圖（例如：設計圖：汽車）。
 - 物件 (Object)：實體（例如：那台紅色的賓士）。
-- new 關鍵字：就是「照著藍圖造出一台車」的動作。 \
+- new 關鍵字：就是「照著藍圖造出一台車」的動作。 
   - SqlConnection conn = new SqlConnection();
   - 這行就是在說：我要照著連線藍圖，造出一個真正的連線物件。
 5. 存取修飾詞 (Access Modifiers)
@@ -811,6 +813,7 @@ ADO.NET 的運作原理可以拆解為兩個核心架構：「連線式」與「
 
 2️⃣ 緩衝快取（離線式元件)
 這就是我們寫程式用來填滿表格的核心，它們可以在斷開連線後繼續使用資料。
+
 4. SqlDataAdapter (轉接器/水管)
 - 角色：連線式與離線式之間的「橋樑」。
 - 原理：它內部其實包含了 SelectCommand。當你呼叫 .Fill() 時，它會自動：
@@ -829,3 +832,44 @@ ADO.NET 的運作原理可以拆解為兩個核心架構：「連線式」與「
 3. Transport: SqlDataAdapter 拿著桶子（DataTable）去接資料。
 4. Fill: 資料填滿 DataTable 後，電話（Connection）掛斷。
 5. Display: DataGridView.DataSource = dt（把桶子裡的資料倒給螢幕看）。
+
+## 筆記
+Q: SqlCommand 和 SqlDataAdapter 它們之間的關係 (可以看到CURD程式碼裡面我們有的用SqlDataAdapter或是SqlCommand )  
+A: 簡單來說：SqlDataAdapter 其實偷偷把 SqlCommand 藏在它肚子裡面了。 \
+解釋:  
+1. 當我們寫 new SqlDataAdapter(sql, conn) 時，SqlDataAdapter 為了讓我們少寫幾行程式碼，它在後台自動幫我們做了一件事：  
+它幫我們 new 了一個 SqlCommand。
+
+它把你的 sql 語句和 conn 連線物件都塞進了這個隱形的 Command 裡。
+所以，這兩段程式碼的效果是完全一樣的：
+【做法 A：簡寫版（我們現在用的）】
+```C#
+SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
+
+```
+【做法 B：完整拆解版】
+```C#
+SqlCommand cmd = new SqlCommand(sql, conn); // 先建指令
+SqlDataAdapter adapter = new SqlDataAdapter(cmd); // 把指令交給外送員
+
+```
+2. 為什麼要有這兩種寫法？
+既然簡寫版這麼方便，為什麼還要有「做法 B」呢？
+當我們需要「細節設定」時用 SqlCommand：
+如果需要設定 指令逾時時間 (CommandTimeout)，或者要加上 參數 (Parameters) 來防止 SQL 注入時，你通常會先建立 SqlCommand：
+```C#
+SqlCommand cmd = new SqlCommand("SELECT * FROM Users WHERE Id = @id", conn);
+cmd.Parameters.AddWithValue("@id", 1); // 這種細節設定，DataAdapter 的簡寫版做不到
+SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+```
+3. 三劍客的「巢狀」關係
+可以這樣想像：
+SqlConnection 是手機。
+SqlCommand 是簡訊內容。
+SqlDataAdapter 是自動發報機。
+自動發報機 (Adapter) 需要有 手機 (Connection) 和 內容 (Command) 才能工作。如果你直接給它文字和手機，它會自己組裝成一條簡訊發出去。
+
+🚩 小結 
+
+- 讀取資料並顯示 (SELECT)：通常用 SqlDataAdapter（因為它內建了 Command 且支援 Fill 到 DataTable）。
+- 動手修改資料 (INSERT/UPDATE/DELETE)：通常直接用 SqlCommand（因為不需要透過 Adapter 轉一手，直接 Execute 就好）。
