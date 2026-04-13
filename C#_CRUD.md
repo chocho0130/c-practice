@@ -2,7 +2,7 @@
 
 1. Create (新增)
 2. Read (讀取/搜尋)
-3. Update (修改 - 雖然還沒寫，但原理跟新增一樣是 UPDATE 語法)
+3. Update (修改)
 4. Delete (刪除)
 
 以下是完成的介面 \
